@@ -1,7 +1,7 @@
 import requests
 import json
 
-
+# This is just here as a reference.
 state = requests.get(firebase_url)
 firebase_url = "https://blink-8bae2.firebaseio.com/openCV.json"
 
