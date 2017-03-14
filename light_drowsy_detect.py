@@ -18,7 +18,7 @@ eyeglass_cascade = cv2.CascadeClassifier('h_cascade/haarcascade_eye_tree_eyeglas
 
 firebase_url = "https://blink-8bae2.firebaseio.com/openCV.json"
 # set sleeping and status in payload
-payload = {"sleeping": "false", "status": "bob"}
+payload = {"sleeping": "false"}
 headers = {"Content-Type": "application/json"}
 
 # initialize firebase datastore with sleeping as false
@@ -27,7 +27,7 @@ response = requests.put(firebase_url, data=json.dumps(payload), headers=headers)
 
 
 # setup the video capture to use primary camera
-capture = cv2.VideoCapture(1)
+capture = cv2.VideoCapture(0)
 
 closed_count = 0
 iteration = 0
@@ -63,7 +63,7 @@ while True:
         # Debugging print
         print("Count: " + str(closed_count) + " Iteration: " + str(iteration))
         # if the number of iterations is is 2 and count is 0, driver is drowsy
-        if(iteration >= 2):
+        if(iteration >= 6):
             if(closed_count == 0):
                 print("Driver is drowsy")
                 payload["sleeping"] = "false"

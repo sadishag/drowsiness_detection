@@ -1,3 +1,4 @@
+
 import cv2 
 import numpy as np
 import pdb
@@ -14,11 +15,12 @@ eye_cascade = cv2.CascadeClassifier('h_cascade/haarcascade_eye.xml')
 # use the haarcascade for eyeglasses
 eyeglass_cascade = cv2.CascadeClassifier('h_cascade/haarcascade_eye_tree_eyeglasses.xml')
 
-
-firebase_url = "https://blink-8bae2.firebaseio.com/openCV.json"
+firebase_url = "https://androidwearheartrate.firebaseio.com/openCV.json"
+#firebase_url = "https://blink-8bae2.firebaseio.com/openCV.json"
 # set sleeping and status in payload
 payload = {"sleeping": "true", "status": "bob"}
 headers = {"Content-Type": "application/json"}
+font = cv2.FONT_HERSHEY_SIMPLEX
 
 
 
@@ -36,8 +38,8 @@ while True:
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     # opencv face detection 
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
-    if(len(faces) == 0):
-        continue
+    # if(len(faces) == 0):
+    #     continue
 
     for (f_x,f_y,f_w,f_h) in faces:
         # draw blue box around face
@@ -52,13 +54,14 @@ while True:
         closed_count += len(eyes)
         iteration += 1
 
-        print("Count: " + str(closed_count) + " Iteration: " + str(iteration))
+        # print("Count: " + str(closed_count) + " Iteration: " + str(iteration))
         # if the number of iterations is is 2 and count is 0, driver is drowsy
-        if(iteration >= 2):
+        if(iteration >= 4):
             if(closed_count == 0):
                 print("Driver is drowsy")
+                cv2.putText(img,'DROWSY',(10,500), font, 4,(255,0,0),2,255)
+                # this is backwards 
                 payload["sleeping"] = "false"
-                
             else:
                 payload["sleeping"] = "true"
             iteration = 0
